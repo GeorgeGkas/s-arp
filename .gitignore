@@ -1,0 +1,4 @@
+# Ignore the build folder and the executable file as
+# these are generated through making procedure.
+build/
+s-arp
