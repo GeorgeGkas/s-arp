@@ -7,3 +7,4 @@
 ---
 - Add a method to support all showing clients for spoofing. Now we only can support up to 10, in best case scenario.
 - Create a thread when a user selects a device to spoof, that sends automatically poisoned ARP replys to target every `X` seconds. This thread will stop when the user sets the target's state back to normal (unspoof).
+
