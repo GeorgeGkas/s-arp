@@ -48,8 +48,8 @@ int main(void) {
 
   generateDevicesList(&devicesListHead, &WI); /* Associate every LAN address to an imaginary device. */
 
-  pcapPrepareHandler(WI.deviceName); /* Prepare the pcap handler to read data. */
-  pcapSetHandlerARPFilter(WI.MAC, WI.subnetMask); /* Read only arp requests & reponses. */
+  pcapPrepareARPHandler(WI.deviceName); /* Prepare the pcap handler to read data. */
+  pcapSetARPHandlerFilter(WI.MAC, WI.subnetMask); /* Read only arp requests & reponses. */
 
   printARPLoadingScreen();
   startARPRequests(&devicesListHead, &WI);
@@ -95,8 +95,8 @@ int main(void) {
 }
 
 void sigintExitHandler(int param) {
-  if (pcapHandler != NULL) {
-    pcapCloseHandler(); /* We can exit pcap capture procedure. */
+  if (pcapARPHandler != NULL) {
+    pcapCloseARPHandler(); /* We can exit pcap capture procedure. */
   }
   if (devicesListHead != NULL) {
     clearDevicesList(&devicesListHead); /* Free the netDevices list. */

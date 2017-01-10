@@ -21,6 +21,6 @@
 #include "TUI/TUI.h"
 #include "networkDevices/networkDevices.h"
 #include "wirelessInterface/wirelessInterface.h"
-#include "pcapHandler/pcapHandler.h"
+#include "pcapARPHandler/pcapARPHandler.h"
 #include "pcapARP/pcapARP.h"
 #include "pcapARPSpoof/pcapARPSpoof.h"

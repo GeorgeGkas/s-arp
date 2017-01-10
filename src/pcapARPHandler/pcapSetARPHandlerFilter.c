@@ -18,9 +18,9 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#include "pcapHandler.h"
+#include "pcapARPHandler.h"
 
-void pcapSetHandlerARPFilter(const unsigned char *MAC, const bpf_u_int32 subnetMask) {
+void pcapSetARPHandlerFilter(const unsigned char *MAC, const bpf_u_int32 subnetMask) {
   struct bpf_program filter;
   char *filterStr;
   filterStr = makeMessage("ether dst %.2x:%.2x:%.2x:%.2x:%.2x:%.2x and "
@@ -32,10 +32,10 @@ void pcapSetHandlerARPFilter(const unsigned char *MAC, const bpf_u_int32 subnetM
                           "ether[24:2]=0x0806))",
                           MAC[0], MAC[1], MAC[2], MAC[3], MAC[4], MAC[5]);
 
-  if ((pcap_compile(pcapHandler, &filter, filterStr, OPTIMISE, subnetMask)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_COMPILE);
+  if ((pcap_compile(pcapARPHandler, &filter, filterStr, OPTIMISE, subnetMask)) < 0) {
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_COMPILE);
   }
-  if ((pcap_setfilter(pcapHandler, &filter)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_SET_FILTER);
+  if ((pcap_setfilter(pcapARPHandler, &filter)) < 0) {
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_SET_FILTER);
   }
 }

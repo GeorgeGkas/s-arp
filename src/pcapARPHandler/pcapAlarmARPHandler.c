@@ -18,8 +18,8 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#include "pcapHandler.h"
+#include "pcapARPHandler.h"
 
-void pcapAlarmHandler() {
-   pcap_breakloop(pcapHandler);
+void pcapAlarmARPHandler() {
+   pcap_breakloop(pcapARPHandler);
 }

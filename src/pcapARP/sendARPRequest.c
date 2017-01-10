@@ -54,9 +54,9 @@ void sendARPRequest(netDevices **currentDevice, wirelessInterface **WI) {
 
   packageARP(ARPBuffer, &frameHeader, &ARPData, &ARPBufferLength);
  
-  nsent = pcap_sendpacket(pcapHandler, ARPBuffer, ARPBufferLength);
+  nsent = pcap_sendpacket(pcapARPHandler, ARPBuffer, ARPBufferLength);
 
   if (nsent < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_SEND_ARP_REQUEST);
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_SEND_ARP_REQUEST);
   }
 }

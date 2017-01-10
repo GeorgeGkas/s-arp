@@ -18,24 +18,21 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#include "pcapHandler.h"
+#ifndef pcapARPHandler_H
+#define pcapARPHandler_H
 
-void pcapPrepareHandler(const char *deviceName) {
-  char errorBuffer[PCAP_ERRBUF_SIZE];
+#include "../wirelessInterface/wirelessInterface.h"
 
-  if (!(pcapHandler = pcap_create(deviceName, errorBuffer))) {
-    throwErrorScreen(errorBuffer, PCAP_HANDLER_CREATE);
-  }
-  if ((pcap_set_snaplen(pcapHandler, SNAPLEN)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_HANDLER_SET_SNAPLEN);
-  }
-  if ((pcap_set_promisc(pcapHandler, PROMISC)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_HANDLER_SET_PROMISC);
-  }
-  if ((pcap_set_timeout(pcapHandler, TO_MS)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_HANDLER_SET_TIMEOUT);
-  }
-  if ((pcap_activate(pcapHandler)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_HANDLER_ACTIVATE);
-  }
-}
+#define SNAPLEN 64
+#define PROMISC 1
+#define TO_MS 100
+#define OPTIMISE 1
+
+pcap_t *pcapARPHandler;
+
+void pcapPrepareARPHandler(const char *deviceName);
+void pcapSetARPHandlerFilter(const unsigned char *MAC, const bpf_u_int32 subnetMask);
+void pcapAlarmARPHandler();
+void pcapCloseARPHandler();
+
+#endif

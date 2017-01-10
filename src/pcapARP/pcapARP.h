@@ -21,12 +21,12 @@
 #ifndef pcapARP_H
 #define pcapARP_H
 
-#include "pcapHandler/pcapHandler.h"
+#include "../pcapARPHandler/pcapARPHandler.h"
 #include "../networkDevices/networkDevices.h"
 
 #include <signal.h>
 
-#define ALARM_TIMEOUT 2 /* In how much time do we have to stop listen for arp responses.*/
+#define ARP_ALARM_TIMEOUT 2 /* In how much time do we have to stop listen for arp responses.*/
 
 #define ARP_ETHER_PACKET 0x0806 /* Address Resolution packet. */
 #define DEFAULT_ETHER_PRO ARP_ETHER_PACKET /* Default Ethernet protocol. */

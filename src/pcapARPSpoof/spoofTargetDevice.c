@@ -53,10 +53,10 @@ void spoofTargetDevice(netDevices **targetDevice, wirelessInterface *WI) {
 
   packageARP(ARPBuffer, &frameHeader, &ARPData, &ARPBufferLength);
  
-  nsent = pcap_sendpacket(pcapHandler, ARPBuffer, ARPBufferLength);
+  nsent = pcap_sendpacket(pcapARPHandler, ARPBuffer, ARPBufferLength);
 
   if (nsent < 0) {
-    throwErrorScreen(pcap_geterr(pcapHandler), PCAP_SEND_SPOOFED_ARP_RESPONSE);
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_SEND_SPOOFED_ARP_RESPONSE);
   } else {
     (*targetDevice)->state = SPOOFED;
   }

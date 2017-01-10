@@ -18,21 +18,8 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#ifndef pcapHandler_H
-#define pcapHandler_H
+#include "pcapARPHandler.h"
 
-#include "../wirelessInterface/wirelessInterface.h"
-
-#define SNAPLEN 64
-#define PROMISC 1
-#define TO_MS 100
-#define OPTIMISE 1
-
-pcap_t *pcapHandler;
-
-void pcapPrepareHandler(const char *deviceName);
-void pcapSetHandlerARPFilter(const unsigned char *MAC, const bpf_u_int32 subnetMask);
-void pcapAlarmHandler();
-void pcapCloseHandler();
-
-#endif
+void pcapCloseARPHandler() {
+  pcap_close(pcapARPHandler);
+}
