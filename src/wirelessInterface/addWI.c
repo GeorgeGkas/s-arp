@@ -27,5 +27,4 @@ void addWI(wirelessInterface **WI, const char *deviceName, const bpf_u_int32 *lo
     memcpy(&((*WI)->gatewayAddress), gatewayAddress, sizeof(bpf_u_int32));
     memcpy(&((*WI)->subnetMask), subnetMask, sizeof(bpf_u_int32));
     memcpy((*WI)->MAC, MAC, ETH_ALEN);
-
 }

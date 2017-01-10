@@ -45,7 +45,7 @@
  * others that correspond to our LAN configurations.
  */
 typedef struct {
-  char deviceName[IFNAMSIZ]; /* Wireless inteface name. */
+  char deviceName[IFNAMSIZ]; /* Wireless interface name. */
   bpf_u_int32 localAddressRange; /* IETF IP Protocol Assignment range as described in RFC 6890. */
   bpf_u_int32 localAddress; /* Our computer IPv4 address. */
   bpf_u_int32 gatewayAddress; /* Gateway IPv4 address. */

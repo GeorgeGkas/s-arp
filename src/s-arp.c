@@ -29,11 +29,12 @@
 void sigintExitHandler(int param);
 
 /**
- * Static global list netDevices. 
+ * Static global structures. 
  * We put it here cause we need to
  * free it on exit in sigintExitHandler().
  */
 static netDevices *devicesListHead = NULL; 
+wirelessInterfaceMonitor WIMonitor;
 
 int main(void) {
   signal(SIGINT, sigintExitHandler); /* Catch ctrl+c signal. */
@@ -45,6 +46,8 @@ int main(void) {
 
   wirelessInterface WI; 
   getWI(&WI); /* Get informations about the wireless interface we use. */
+
+  addWIMonitor(&WIMonitor, "wimon0", WI.MAC); /* Create a wireless interface in monitor mode. */
 
   generateDevicesList(&devicesListHead, &WI); /* Associate every LAN address to an imaginary device. */
 
@@ -101,6 +104,7 @@ void sigintExitHandler(int param) {
   if (devicesListHead != NULL) {
     clearDevicesList(&devicesListHead); /* Free the netDevices list. */
   }
+  delWIMonitor(&WIMonitor); /* Delete wireless interface in monitor mode. */
   endwin(); /* Exit ncurses mode. */
   exit(EXIT_SUCCESS); /* Exit program. */
 }
