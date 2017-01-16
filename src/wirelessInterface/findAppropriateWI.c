@@ -18,23 +18,21 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#include "TUI.h"
+#include "wirelessInterface.h"
 
-void throwErrorScreen(char *errorMessage, int errorCode) {
-  int screenWidth;
-  WINDOW *errorScr;
-  initCenteralizeScreen(&errorScr, &screenWidth);
+int findAppropriateWI(char *deviceName, char *errorBuffer) {
+	pcap_if_t *interfacesList;
+	pcap_if_t *interface;
+	pcap_addr_t *interface_addr;
 
-  char *Pname = initCenteralizedMessage(PROGRAM_NAME, screenWidth);
-
-  char errorBuffer[256];
-  sprintf(errorBuffer, "Error [%d]: %s", errorCode, errorMessage);
-  char *centeralizedErrorMessage = initCenteralizedMessage(errorBuffer, screenWidth);
-
-  char *returnButton = initCenteralizedMessage("Press ctrl+c to exit...", screenWidth);
-
-  wprintw(errorScr, "\n%s\n\n%s\n\n\n%s", Pname, centeralizedErrorMessage, returnButton);
-  wrefresh(errorScr);
-  drawBorder(errorScr);
-  while (1); /* infinite loop to force the user press ctrl+c and use the handler in s-arp.c */
+	if (pcap_findalldevs(&interfacesList, errorBuffer) == -1) {
+		return -1;
+	}
+	for (interface = interfacesList; interface != NULL; interface = interface->next) {
+		for (interface_addr = interface->addresses; interface_addr != NULL; interface_addr = interface_addr->next) {
+			if (interface_addr->addr->sa_family == AF_INET && interface_addr->addr && interface_addr->netmask && strcmp(interface->name, "lo") != 0) {
+				strcpy(deviceName, interface->name);
+			}
+		}
+	}
 }

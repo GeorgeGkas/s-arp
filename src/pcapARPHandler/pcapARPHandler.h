@@ -21,7 +21,10 @@
 #ifndef pcapARPHandler_H
 #define pcapARPHandler_H
 
-#include "../wirelessInterface/wirelessInterface.h"
+#include <pcap.h>
+#include "../TUI/TUI.h"
+#include "../utils/error.h"
+ #include "../utils/utils.h"
 
 #define SNAPLEN 64
 #define PROMISC 1

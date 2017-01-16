@@ -18,23 +18,21 @@
  * Contact with the author at <georgegkas@gmail.com>.
  *
  */
-#include "TUI.h"
+#ifndef pcapDeauthHandler_H
+#define pcapDeauthHandler_H
 
-void throwErrorScreen(char *errorMessage, int errorCode) {
-  int screenWidth;
-  WINDOW *errorScr;
-  initCenteralizeScreen(&errorScr, &screenWidth);
+#define SNAPLEN 64
+#define PROMISC 1
+#define TO_MS 100
+#define OPTIMISE 1
 
-  char *Pname = initCenteralizedMessage(PROGRAM_NAME, screenWidth);
+#include <pcap.h>
+#include "../TUI/TUI.h"
+#include "../utils/error.h"
 
-  char errorBuffer[256];
-  sprintf(errorBuffer, "Error [%d]: %s", errorCode, errorMessage);
-  char *centeralizedErrorMessage = initCenteralizedMessage(errorBuffer, screenWidth);
+pcap_t *pcapDeauthHandler;
 
-  char *returnButton = initCenteralizedMessage("Press ctrl+c to exit...", screenWidth);
+void pcapPrepareDeauthHandler(const char *deviceName);
+void pcapCloseDeauthHandler();
 
-  wprintw(errorScr, "\n%s\n\n%s\n\n\n%s", Pname, centeralizedErrorMessage, returnButton);
-  wrefresh(errorScr);
-  drawBorder(errorScr);
-  while (1); /* infinite loop to force the user press ctrl+c and use the handler in s-arp.c */
-}
+#endif

@@ -67,5 +67,6 @@ int getWIMACAddress(const char *deviceName, unsigned char *MAC, char *errorBuffe
 int isEmptyMACAddress(const unsigned char *MAC);
 void addWI(wirelessInterface **WI, const char *deviceName, const bpf_u_int32 *localAddressRange, const bpf_u_int32 *localAddress, const bpf_u_int32 *gatewayAddress, const bpf_u_int32 *subnetMask, const unsigned char *MAC);
 void printWI(wirelessInterface *WI);
+int findAppropriateWI(char *deviceName, char *errorBuffer);
 
 #endif

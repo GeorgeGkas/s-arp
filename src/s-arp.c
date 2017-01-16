@@ -26,18 +26,18 @@
  * the memmory block from dynamic allocated 
  * structures.
  */
-void sigintExitHandler(int param);
+void exitGarbageCollector(int param);
 
 /**
  * Static global structures. 
  * We put it here cause we need to
- * free it on exit in sigintExitHandler().
+ * free it on exit in exitGarbageCollector().
  */
 static netDevices *devicesListHead = NULL; 
-wirelessInterfaceMonitor WIMonitor;
+static wirelessInterfaceMonitor WIMonitor;
 
 int main(void) {
-  signal(SIGINT, sigintExitHandler); /* Catch ctrl+c signal. */
+  signal(SIGINT, exitGarbageCollector); /* Catch ctrl+c signal. */
 
   initscr(); /* Start ncurses mode. */
   noecho(); /* Don't echo() characters passed with getch(). */
@@ -51,8 +51,10 @@ int main(void) {
 
   generateDevicesList(&devicesListHead, &WI); /* Associate every LAN address to an imaginary device. */
 
-  pcapPrepareARPHandler(WI.deviceName); /* Prepare the pcap handler to read data. */
+  pcapPrepareARPHandler(WI.deviceName); /* Prepare the pcap handler to process ARP data. */
   pcapSetARPHandlerFilter(WI.MAC, WI.subnetMask); /* Read only arp requests & reponses. */
+
+  pcapPrepareDeauthHandler(WIMonitor.deviceName); /* Prepare the pcap handler to process deauth data.  */
 
   printARPLoadingScreen();
   startARPRequests(&devicesListHead, &WI);
@@ -97,7 +99,7 @@ int main(void) {
   }
 }
 
-void sigintExitHandler(int param) {
+void exitGarbageCollector(int param) {
   if (pcapARPHandler != NULL) {
     pcapCloseARPHandler(); /* We can exit pcap capture procedure. */
   }

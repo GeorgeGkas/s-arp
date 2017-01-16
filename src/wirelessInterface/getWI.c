@@ -21,7 +21,7 @@
 #include "wirelessInterface.h"
 
 void getWI(wirelessInterface *WI) {
-  char *deviceName;
+  char deviceName[IFNAMSIZ];
   char errorBuffer[PCAP_ERRBUF_SIZE];
 
   bpf_u_int32 localAddressRange = 0;
@@ -32,10 +32,12 @@ void getWI(wirelessInterface *WI) {
 
   int errorCode;
 
-  deviceName = pcap_lookupdev(errorBuffer);
+  if (findAppropriateWI(deviceName, errorBuffer) == -1) {
+    throwErrorScreen(errorBuffer, FINDAPPROPRIATEDEVICE);
+  }
 
   if (deviceName == NULL) {
-    throwErrorScreen(errorBuffer, PCAPLOOKUPDEV);
+    throwErrorScreen(errorBuffer, DEVICENAMENULL);
   } else {
     errorCode = pcap_lookupnet(deviceName, &localAddressRange, &subnetMask, errorBuffer);
     if (errorCode == -1) {

@@ -33,9 +33,9 @@ void pcapSetARPHandlerFilter(const unsigned char *MAC, const bpf_u_int32 subnetM
                           MAC[0], MAC[1], MAC[2], MAC[3], MAC[4], MAC[5]);
 
   if ((pcap_compile(pcapARPHandler, &filter, filterStr, OPTIMISE, subnetMask)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_COMPILE);
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_ARP_COMPILE);
   }
   if ((pcap_setfilter(pcapARPHandler, &filter)) < 0) {
-    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_SET_FILTER);
+    throwErrorScreen(pcap_geterr(pcapARPHandler), PCAP_ARP_SET_FILTER);
   }
 }
