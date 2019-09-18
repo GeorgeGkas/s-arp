@@ -1,40 +1,71 @@
 #include "s-arp.h"
 
 /**
- * User exit the program only with ctrl+c.
- * This functions is used as handler to clear
- * the memmory block from dynamic allocated 
- * structures.
+ * This is a handler function to clear
+ * the memory block from dynamic allocated 
+ * structures when user exist with ctrl+c.
  */
 void exitGarbageCollector(int param);
 
 /**
- * Static global structures. 
- * We put it here cause we need to
- * free it on exit in exitGarbageCollector().
+ * Static global structures used by exitGarbageCollector().
  */
 static netDevices *devicesListHead = NULL; 
 static wirelessInterfaceMonitor WIMonitor;
 
 int main(void) {
-  signal(SIGINT, exitGarbageCollector); /* Catch ctrl+c signal. */
+  /**
+   * Catch ctrl+c signal.
+   */
+  signal(SIGINT, exitGarbageCollector);
 
-  initscr(); /* Start ncurses mode. */
-  noecho(); /* Don't echo() characters passed with getch(). */
-  curs_set(0); /* Make the cursor invisible. */
+  /**
+   * Start ncurses mode.
+   */
+  initscr();
+
+  /**
+   * Don't echo() characters passed with getch().
+   */
+  noecho();
+
+  /**
+   * Make the cursor invisible.
+   */
+  curs_set(0);
+
   printWelcomeScreen();
 
+  /**
+   * Get information about the wireless interface.
+   */
   wirelessInterface WI; 
-  getWI(&WI); /* Get informations about the wireless interface we use. */
+  getWI(&WI);
 
-  addWIMonitor(&WIMonitor, "wimon0", WI.MAC); /* Create a wireless interface in monitor mode. */
+  /**
+   * Create a wireless interface in monitor mode.
+   */
+  addWIMonitor(&WIMonitor, "wimon0", WI.MAC);
 
-  generateDevicesList(&devicesListHead, &WI); /* Associate every LAN address to an imaginary device. */
+  /**
+   * Associate every LAN address to an imaginary device.
+   */
+  generateDevicesList(&devicesListHead, &WI);
 
-  pcapPrepareARPHandler(WI.deviceName); /* Prepare the pcap handler to process ARP data. */
-  pcapSetARPHandlerFilter(WI.MAC, WI.subnetMask); /* Read only arp requests & reponses. */
+  /**
+   * Prepare the pcap handler to process ARP data.
+   */
+  pcapPrepareARPHandler(WI.deviceName);
 
-  pcapPrepareDeauthHandler(WIMonitor.deviceName); /* Prepare the pcap handler to process deauth data.  */
+  /**
+   * Read only arp requests and reponse.
+   */
+  pcapSetARPHandlerFilter(WI.MAC, WI.subnetMask);
+
+  /**
+   * Prepare the pcap handler to process deauth data.
+   */
+  pcapPrepareDeauthHandler(WIMonitor.deviceName);
 
   printARPLoadingScreen();
   startARPRequests(&devicesListHead, &WI);
@@ -43,25 +74,39 @@ int main(void) {
   int numberOfActiveDevices;
   getNumberOfActiveDevices(&numberOfActiveDevices, &devicesListHead);
  
-  halfdelay(10); /* Used as timeout for user input. */
+  /**
+   * Used as timeout for user input.
+   */
+  halfdelay(10);
 
   /**
    * Bellow, starts the main program loop. 
    */
   while (1) {
-    clear(); /* Clear completely the ncurses window. */
+    /**
+     * Clear completely the ncurses window.
+     */
+    clear();
     drawTimeHeader();
     printActiveDevices(&devicesListHead);
-    refresh(); /* Dump the written contents on the physical terminal screen. */
+
+    /**
+     * Dump the written contents on the physical terminal screen.
+     */
+    refresh();
 
     /**
      * Ask user if he wants to take an action in the current repeat.
-     * A pressed key indicates what the user want to do so.
-     * If none key is pressed (here halfdelay() is used for), we step to the next repeat. 
+     * A pressed key indicates what the user wants to do so.
+     * If none key is pressed (halfdelay() is used), 
+     * we step to the next repeat. 
      */
     int choice;
     choice = getch();
-    if (choice == 'r') { /* Rescan the LAN. */
+    if (choice == 'r') {
+      /**
+       * Rescan the LAN.
+       */
       clear();
       printARPLoadingScreen();
       clearARPCache(&devicesListHead);
@@ -81,12 +126,30 @@ int main(void) {
 
 void exitGarbageCollector(int param) {
   if (pcapARPHandler != NULL) {
-    pcapCloseARPHandler(); /* We can exit pcap capture procedure. */
+    /**
+     * We can exit pcap capture procedure. 
+     */
+    pcapCloseARPHandler();
   }
   if (devicesListHead != NULL) {
-    clearDevicesList(&devicesListHead); /* Free the netDevices list. */
+    /**
+     * Free the netDevices list.
+     */
+    clearDevicesList(&devicesListHead);
   }
-  delWIMonitor(&WIMonitor); /* Delete wireless interface in monitor mode. */
-  endwin(); /* Exit ncurses mode. */
-  exit(EXIT_SUCCESS); /* Exit program. */
+
+  /**
+   * Delete wireless interface in monitor mode.
+   */
+  delWIMonitor(&WIMonitor);
+
+  /**
+   * Exit ncurses mode.
+   */
+  endwin();
+
+  /**
+   * Exit program.
+   */
+  exit(EXIT_SUCCESS);
 }
