@@ -1,6 +1,11 @@
 #include "pcapARP.h"
 
-void packageARP(unsigned char *buffer, etherHeader *frameHeader, arpIPv4packet *ARPData, size_t *ARPBufferLength) {
+void packageARP(
+  unsigned char *buffer,
+  etherHeader *frameHeader,
+  arpIPv4packet *ARPData,
+  size_t *ARPBufferLength
+) {
   unsigned char *cp;
   size_t packet_size;
 
@@ -18,8 +23,9 @@ void packageARP(unsigned char *buffer, etherHeader *frameHeader, arpIPv4packet *
                 + sizeof(ARPData->spa)         
                 + sizeof(ARPData->tha)        
                 + sizeof(ARPData->tpa);
-  /*
-   *  Copy the Ethernet frame header to the buffer.
+
+  /**
+   * Copy the Ethernet frame header to the buffer.
    */
   memcpy(cp, &(frameHeader->destMAC), sizeof(frameHeader->destMAC));
   cp += sizeof(frameHeader->destMAC);
@@ -31,9 +37,8 @@ void packageARP(unsigned char *buffer, etherHeader *frameHeader, arpIPv4packet *
   memcpy(cp, &(frameHeader->type), sizeof(frameHeader->type));
   cp += sizeof(frameHeader->type);
 
-
-  /*
-   *  Add the ARP data.
+  /**
+   * Add the ARP data.
    */
   memcpy(cp, &(ARPData->htype), sizeof(ARPData->htype));
   cp += sizeof(ARPData->htype);

@@ -8,11 +8,22 @@
 #define ETH_ALEN 6
 
 typedef struct {
-  char deviceName[IFNAMSIZ]; /* Wireless interface name for monitor mode. */
-  unsigned char MAC[ETH_ALEN]; /* Wireless interface MAC address for monitor mode.. */
+  /**
+   * Wireless interface name for monitor mode.
+   */
+  char deviceName[IFNAMSIZ];
+
+  /**
+   * Wireless interface MAC address for monitor mode.
+   */
+  unsigned char MAC[ETH_ALEN];
 } wirelessInterfaceMonitor;
 
-void addWIMonitor(wirelessInterfaceMonitor *WIMonitor, const char *deviceName, const unsigned char *MAC);
+void addWIMonitor(
+  wirelessInterfaceMonitor *WIMonitor, 
+  const char *deviceName, 
+  const unsigned char *MAC
+);
 void registerWIMonitor(const char *deviceName);
 void delWIMonitor(wirelessInterfaceMonitor *WIMonitor);
 

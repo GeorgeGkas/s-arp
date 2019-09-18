@@ -6,15 +6,17 @@ void unspoofTargetDevice(netDevices **targetDevice, netDevices **routerDevice) {
   etherHeader frameHeader;
   arpIPv4packet ARPData;
   int nsent = 0;
-  /*
-   *  Construct Ethernet frame header
+
+  /**
+   * Construct Ethernet frame header
    */
   memcpy(frameHeader.destMAC, (*targetDevice)->MAC, ETH_ALEN);
 
   memcpy(frameHeader.srcMAC, (*routerDevice)->MAC, ETH_ALEN);
   frameHeader.type = htons(DEFAULT_ETHER_PRO);
-  /*
-   *  Construct the ARP Header.
+
+  /**
+   * Construct the ARP Header.
    */
   memset(&ARPData, '\0', sizeof(arpIPv4packet));
   ARPData.htype = htons(DEFAULT_ARP_HTYPE);
@@ -26,11 +28,12 @@ void unspoofTargetDevice(netDevices **targetDevice, netDevices **routerDevice) {
 
   memcpy(ARPData.tha, (*targetDevice)->MAC, ETH_ALEN);
 
-
-  ARPData.spa = (*routerDevice)->address; // sourse ip address
+  /**
+   * Source IP address.
+   */
+  ARPData.spa = (*routerDevice)->address;
   ARPData.tpa = (*targetDevice)->address;
   
-
   packageARP(ARPBuffer, &frameHeader, &ARPData, &ARPBufferLength);
  
   nsent = pcap_sendpacket(pcapARPHandler, ARPBuffer, ARPBufferLength);

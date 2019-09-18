@@ -9,8 +9,16 @@
 typedef struct {
   time_t currentTime;
   time_t previousTime;
-  int elapsedTime; /* currentTime - previousTime */
-  char timeUnit[5]; /* "s", "min", "h" */
+
+  /**
+   * currentTime - previousTime
+   */
+  int elapsedTime;
+
+  /**
+   * "s", "min", "h"
+   */
+  char timeUnit[5];
 } ElapsedTime_s;
 
 char *initCenteralizedMessage(char *str, int winWidth);

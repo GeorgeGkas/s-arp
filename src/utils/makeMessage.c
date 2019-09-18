@@ -19,24 +19,46 @@
  */
 char *makeMessage(const char *fmt, ...) {
   int n;
-  /* Guess we need no more than 100 bytes. */
+  
+  /**
+   * Guess we need no more than 100 bytes.
+   */
   size_t size = 100;
   char *p;
   va_list ap;
   p = malloc(size);
   while (1) {
-    /* Try to print in the allocated space. */
+    /**
+     * Try to print in the allocated space. 
+     */
     va_start(ap, fmt);
     n = vsnprintf (p, size, fmt, ap);
     va_end(ap);
-    /* If that worked, return the string. */
-    if (n > -1 && n < (int) size)
+    
+    /**
+     * If that worked, return the string.
+     */
+    if (n > -1 && n < (int) size) {
       return p;
-    /* Else try again with more space. */
-    if (n > -1)    /* glibc 2.1 */
-      size = n + 1; /* precisely what is needed */
-    else           /* glibc 2.0 */
-      size *= 2;  /* twice the old size */
+    }
+    
+    /**
+     * Else try again with more space.
+     */
+    if (n > -1) {
+      /**
+       * glibc 2.1
+       * Precisely what is needed
+       */
+      size = n + 1;
+    } else {
+      /**
+       * glibc 2.0
+       * Twice the old size.
+       */
+      size *= 2;
+    }
+
     p = realloc(p, size);
   }
 }

@@ -3,7 +3,11 @@
 
 void generateDevicesList(netDevices **devicesListHead, const wirelessInterface *WI) {
   bpf_u_int32 x = WI->subnetMask;
-  int numbits; /* Get the CIDR Prefix. */
+
+  /**
+   * Get the CIDR Prefix.
+   */
+  int numbits;
   for (numbits = 0; x != 0; x >>= 1) {
     if (x & 0x01) {
       numbits++;
@@ -12,7 +16,7 @@ void generateDevicesList(netDevices **devicesListHead, const wirelessInterface *
 
   /**
    * Determine maximum and minimum host values.
-   * we exclude the host and the broadcast.
+   * Exclude the host and the broadcast.
    */
   unsigned long addressBegin;
   unsigned long addressEnd;

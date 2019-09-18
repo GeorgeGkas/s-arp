@@ -9,8 +9,17 @@ int findAppropriateWI(char *deviceName, char *errorBuffer) {
 		return -1;
 	}
 	for (interface = interfacesList; interface != NULL; interface = interface->next) {
-		for (interface_addr = interface->addresses; interface_addr != NULL; interface_addr = interface_addr->next) {
-			if (interface_addr->addr->sa_family == AF_INET && interface_addr->addr && interface_addr->netmask && strcmp(interface->name, "lo") != 0) {
+		for (
+      interface_addr = interface->addresses;
+      interface_addr != NULL;
+      interface_addr = interface_addr->next
+    ) {
+			if (
+        interface_addr->addr->sa_family == AF_INET 
+        && interface_addr->addr 
+        && interface_addr->netmask 
+        && strcmp(interface->name, "lo") != 0
+      ) {
 				strcpy(deviceName, interface->name);
 			}
 		}

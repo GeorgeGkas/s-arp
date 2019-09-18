@@ -6,15 +6,17 @@ void sendARPRequest(netDevices **currentDevice, wirelessInterface **WI) {
   etherHeader frameHeader;
   arpIPv4packet ARPData;
   int nsent = 0;
-  /*
-   *  Construct Ethernet frame header
+
+  /**
+   * Construct Ethernet frame header
    */
   unsigned char destMAC[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
   memcpy(frameHeader.destMAC, destMAC, ETH_ALEN);
   memcpy(frameHeader.srcMAC, (*WI)->MAC, ETH_ALEN);
   frameHeader.type = htons(DEFAULT_ETHER_PRO);
-  /*
-   *  Construct the ARP Header.
+
+  /**
+   * Construct the ARP Header.
    */
   memset(&ARPData, '\0', sizeof(arpIPv4packet));
   ARPData.htype = htons(DEFAULT_ARP_HTYPE);
@@ -27,11 +29,12 @@ void sendARPRequest(netDevices **currentDevice, wirelessInterface **WI) {
   unsigned char defaultTha[6] = {0, 0, 0, 0, 0, 0};
   memcpy(ARPData.tha, defaultTha, ETH_ALEN);
 
-
-  ARPData.spa = (*WI)->localAddress; // sourse ip address
+  /**
+   * Source ip address.
+   */
+  ARPData.spa = (*WI)->localAddress;
   ARPData.tpa = (*currentDevice)->address;
   
-
   packageARP(ARPBuffer, &frameHeader, &ARPData, &ARPBufferLength);
  
   nsent = pcap_sendpacket(pcapARPHandler, ARPBuffer, ARPBufferLength);

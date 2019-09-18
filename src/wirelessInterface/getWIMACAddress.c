@@ -1,6 +1,8 @@
 #include "wirelessInterface.h"
 
-// open the spessified wireless device
+/**
+ * Open the specified wireless device.
+ */
 static link_t *link_open(const char *deviceName) {
   link_t *handle;
 
@@ -20,7 +22,9 @@ static link_t *link_open(const char *deviceName) {
   return handle;
 }
 
-// Close the link
+/**
+ * Close the link.
+ */
 static void link_close(link_t *handle) {
   if (handle != NULL) {
     if (handle->fd != 0) {
@@ -40,7 +44,7 @@ int getWIMACAddress(const char *deviceName, unsigned char *MAC, char *errorBuffe
   }
 
   /**
-   * Obtain hardware address for specified interface 
+   * Obtain hardware address for specified interface.
    */
   if ((ioctl(handle->fd, SIOCGIFHWADDR, &(handle->ifr))) != 0) {
     strcpy(errorBuffer, strerror(errno));

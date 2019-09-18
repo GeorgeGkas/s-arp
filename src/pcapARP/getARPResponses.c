@@ -1,6 +1,5 @@
 #include "pcapARP.h"
 
-
 void getARPResponses(netDevices **devicesListHead) {
   alarm(ARP_ALARM_TIMEOUT);
   signal(SIGALRM, pcapAlarmARPHandler);

@@ -1,7 +1,11 @@
 #include "networkDevices.h"
 
-
-int addDevice(netDevices ***devicesListHead, const char *strIPv4, const wirelessInterface **WI, char *errorBuffer) {
+int addDevice(
+  netDevices ***devicesListHead,
+  const char *strIPv4,
+  const wirelessInterface **WI,
+  char *errorBuffer
+) {
   struct in_addr addr;
   unsigned char null_mac[ETH_ALEN] = {0xff, 0xff, 0xff, 0xff, 0xff, 0xff};
 
