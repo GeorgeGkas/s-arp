@@ -46,4 +46,4 @@ Some important files and folders that are used in this project are explained bel
 This project is not maintained anymore. In case you want to continue the development you can create a new issue and I will personally reach you.
 
 ## License
-`s-arp` is copyrighted to George Gkasdrogkas under [GNU GPLv3](https://www.gnu.org/licenses/gpl-3.0.en.html) license.
+`s-arp` is licensed under [MIT](https://opensource.org/licenses/MIT).
