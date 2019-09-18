@@ -60,7 +60,7 @@ typedef struct {
   /**
    * Socket file descriptor.
    */
-  int fd;/
+  int fd;
   struct ifreq ifr;
   struct sockaddr_ll sll;
 } link_t;
